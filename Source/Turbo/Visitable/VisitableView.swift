@@ -24,7 +24,7 @@ open class VisitableView: UIView {
     open func activateWebView(_ webView: WKWebView, forVisitable visitable: Visitable) {
         self.webView = webView
         self.visitable = visitable
-        addSubview(webView)
+        insertSubview(webView, belowSubview: activityIndicatorView)
         addFillConstraints(for: webView)
         installRefreshControl()
         showOrHideWebView()
@@ -155,7 +155,11 @@ open class VisitableView: UIView {
     open func showScreenshot() {
         guard !isShowingScreenshot, !isRefreshing else { return }
 
-        addSubview(screenshotContainerView)
+        if let webView {
+            insertSubview(screenshotContainerView, aboveSubview: webView)
+        } else {
+            addSubview(screenshotContainerView)
+        }
         addFillConstraints(for: screenshotContainerView)
         showOrHideWebView()
     }
